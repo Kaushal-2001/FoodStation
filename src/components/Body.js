@@ -1,15 +1,13 @@
 import { useState, useEffect } from "react";
 import { Router } from "react-router-dom";
-import { restaurantList } from "../constants";
+import { restaurantList, RES_API } from "../constants";
 import { RestaurantCard } from "./RestaurantCard";
 import Shimmer from "./Shimmer";
 import {Link} from "react-router-dom"
+import { filterData } from "../utils/helper";
+import useStatus from "../utils/useStatus";
+import useOnline from "../utils/useStatus";
 
-
-function filterData(searchInput, restaurants){
-  const filterData = restaurants.filter((restaurant)=>restaurant?.data?.name.toLowerCase()?.includes(searchInput?.toLowerCase()));
-  return filterData;
-}
 
 const Body = () => {
   const [allRestaurants, setAllRestaurants] = useState([]);
@@ -22,14 +20,22 @@ const Body = () => {
   },[]);
   
   
-  async function getRestaurants(){
-    const data = await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=19.1754982&lng=77.2692503&page_type=DESKTOP_WEB_LISTING");
+ async function getRestaurants(){
+    const data = await fetch(RES_API);
     const json = await data.json();
     setAllRestaurants(json?.data?.cards[2]?.data.data?.cards);
     setFilteredRestaurants(json?.data?.cards[2]?.data.data?.cards);
-  }
+ }
+
+const isOnline = useStatus();
+console.log(isOnline);
+if(!isOnline){
+    return <h1>YOU ARE OFFLINE!!!!</h1>;
+  };
+
+
   if (filteredRestaurants?.length===0) return(<h1>No restaurant matches your filter</h1>);
-  
+
   return (allRestaurants?.length === 0)?<Shimmer /> :   (
       <>
         <div className="mt-6 mb-4 flex justify-center " >
@@ -48,10 +54,10 @@ const Body = () => {
         }}
         >Search</button>
         </div>
-          <div className="flex flex-wrap justify-between mx-16 ">  
+          <div className="flex flex-wrap mx-16 ">  
             {filteredRestaurants.map((restaurant) => {
               return (
-              <div className="h-66 hover:transform hover:scale-105 rounded-md m-4 shadow-2xl  ">
+              <div className="h-66 hover:transform hover:scale-105 rounded-md m-4 shadow-2xl mx-5  ">
               <Link to={"/restaurant/"+restaurant?.data.id}
               key = {restaurant.data.id}>
                 <RestaurantCard  {...restaurant.data} />
@@ -62,6 +68,7 @@ const Body = () => {
           </div>
       </>
     )
-  }
+          }
+
 
 export default Body;

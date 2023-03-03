@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+
 const Title = () => (
     <a href = "/">
     <img className="h-28 pl-4 pt-4" alt="logo" 
@@ -15,9 +16,9 @@ const loggedInUser = () =>{
 }
 
 
+
 const Header = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-
     return (
         <div className="flex justify-between items-center shadow-lg bg-orange-600 opacity-85">
             <Title /> 
@@ -48,7 +49,7 @@ const Header = () => {
       
         </div>
         )
-    }  
+                }
 
 export default Header;
 
