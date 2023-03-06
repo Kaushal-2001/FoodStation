@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext} from "react";
 import { Router } from "react-router-dom";
 import { restaurantList, RES_API } from "../constants";
 import { RestaurantCard } from "./RestaurantCard";
@@ -6,7 +6,8 @@ import Shimmer from "./Shimmer";
 import {Link} from "react-router-dom"
 import { filterData } from "../utils/helper";
 import useStatus from "../utils/useStatus";
-import useOnline from "../utils/useStatus";
+import UserContext from "../utils/useContext";
+
 
 
 const Body = () => {
@@ -14,6 +15,8 @@ const Body = () => {
   const[searchInput, setSearchInput] = useState("");
   const[filteredRestaurants, setFilteredRestaurants] = useState(restaurantList);
 
+  const {user, setUser} = useContext(UserContext);
+  
   
   useEffect(()=>{
     getRestaurants();
@@ -41,7 +44,7 @@ if(!isOnline){
         <div className="mt-6 mb-4 flex justify-center " >
           <input 
             type="text" 
-            className=" w-96 px-2 rounded-lg " 
+            className=" w-96 px-2 rounded-lg border " 
             placeholder=" Search" 
             value={searchInput} 
             onChange={(e) => {
@@ -53,6 +56,10 @@ if(!isOnline){
           setFilteredRestaurants(data);
         }}
         >Search</button>
+        <input value={user.name} onChange={e=>setUser({
+          name: e.target.value
+
+          })}></input>
         </div>
           <div className="flex flex-wrap mx-16 ">  
             {filteredRestaurants.map((restaurant) => {
