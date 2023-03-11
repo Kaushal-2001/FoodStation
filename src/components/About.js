@@ -11,7 +11,6 @@
     </div>
     );
 }
-
 export default About; 
  */
  export const Trial = ({name, phone, email}) => {
@@ -50,8 +49,6 @@ class About extends React.Component{
         const json = await data.json();
         console.log(json)
     }
-
-    
     
     render(){
         console.log("render");

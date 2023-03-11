@@ -6,7 +6,7 @@ import Shimmer from "./Shimmer";
 import {Link} from "react-router-dom"
 import { filterData } from "../utils/helper";
 import useStatus from "../utils/useStatus";
-import UserContext from "../utils/useContext";
+
 
 
 
@@ -15,7 +15,7 @@ const Body = () => {
   const[searchInput, setSearchInput] = useState("");
   const[filteredRestaurants, setFilteredRestaurants] = useState(restaurantList);
 
-  const {user, setUser} = useContext(UserContext);
+  
   
   
   useEffect(()=>{
@@ -56,10 +56,6 @@ if(!isOnline){
           setFilteredRestaurants(data);
         }}
         >Search</button>
-        <input value={user.name} onChange={e=>setUser({
-          name: e.target.value
-
-          })}></input>
         </div>
           <div className="flex flex-wrap mx-16 ">  
             {filteredRestaurants.map((restaurant) => {
